@@ -689,10 +689,8 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
 
     y2 = y1;
 
-    cbox_position = FIND_Y - 5;
 
-    only_directories_cbox = check_new (cbox_position--, 3, options.only_directories, file_only_directories_label);
-    add_widget (find_dlg, only_directories_cbox);
+    
     /* Start 1st column */
     add_widget (find_dlg, label_new (y1++, x1, file_name_label));
     in_name =
@@ -718,6 +716,9 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
 
     file_case_sens_cbox = check_new (y1++, x1, options.file_case_sens, file_case_label);
     add_widget (find_dlg, file_case_sens_cbox);
+	
+    only_directories_cbox = check_new (y1++, x1, options.only_directories, file_only_directories_label);
+    add_widget (find_dlg, only_directories_cbox);
 
 #ifdef HAVE_CHARSET
     file_all_charsets_cbox =
@@ -1376,8 +1377,10 @@ do_search (WDialog * h)
                     tmp_vpath = vfs_path_build_filename (directory, dp->d_name, (char *) NULL);
 
                     if (mc_lstat (tmp_vpath, &tmp_stat) == 0 && S_ISDIR (tmp_stat.st_mode))
+		    {
 			is_dir = TRUE;
                         push_directory (tmp_vpath);
+		    }
                     else
                         vfs_path_free (tmp_vpath);
                 }
